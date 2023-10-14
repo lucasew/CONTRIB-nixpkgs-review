@@ -96,6 +96,7 @@ class Review:
         use_ofborg_eval: bool | None = True,
         only_packages: set[str] = set(),
         package_regexes: list[Pattern[str]] = [],
+        run_tests: bool = False,
         skip_packages: set[str] = set(),
         skip_packages_regex: list[Pattern[str]] = [],
         checkout: CheckoutOption = CheckoutOption.MERGE,
@@ -111,6 +112,7 @@ class Review:
         self.checkout = checkout
         self.only_packages = only_packages
         self.package_regex = package_regexes
+        self.run_tests = run_tests
         self.skip_packages = skip_packages
         self.skip_packages_regex = skip_packages_regex
         self.system = system
@@ -215,6 +217,7 @@ class Review:
             self.build_graph,
             self.builddir.nix_path,
             self.nixpkgs_config,
+            run_tests=self.run_tests,
         )
 
     def build_pr(self, pr_number: int) -> list[Attr]:

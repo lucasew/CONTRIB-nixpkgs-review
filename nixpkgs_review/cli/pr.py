@@ -63,6 +63,7 @@ def pr_command(args: argparse.Namespace) -> str:
                     use_ofborg_eval=use_ofborg_eval,
                     only_packages=set(args.package),
                     package_regexes=args.package_regex,
+                    run_tests=args.run_tests,
                     skip_packages=set(args.skip_package),
                     skip_packages_regex=args.skip_package_regex,
                     system=args.system,

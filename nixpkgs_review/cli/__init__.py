@@ -235,6 +235,12 @@ def common_flags() -> list[CommonFlag]:
             help='Build graph to print. Use either "nom" or "nix". Will default to "nom" if available',
         ),
         CommonFlag(
+            "--run-tests",
+            "-t",
+            action="store_true",
+            help="Run passthru.tests for changed packages",
+        ),
+        CommonFlag(
             "--print-result",
             action="store_true",
             help="Print the nixpkgs-review results to stdout",

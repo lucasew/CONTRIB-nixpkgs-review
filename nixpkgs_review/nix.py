@@ -198,6 +198,7 @@ def nix_eval(
     system: str,
     allow: AllowedFeatures,
     nix_path: str,
+    run_tests: bool = False,
 ) -> list[Attr]:
     attr_json = NamedTemporaryFile(mode="w+", delete=False)
     delete = True
@@ -220,7 +221,7 @@ def nix_eval(
             if allow.ifd
             else "--no-allow-import-from-derivation",
             "--expr",
-            f"(import {eval_script} {{ attr-json = {attr_json.name}; }})",
+            f"(import {eval_script} {{ attr-json = {attr_json.name}; run-tests = {'true' if run_tests else 'false'}; }})",
         ]
 
         nix_eval = subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
@@ -246,12 +247,13 @@ def nix_build(
     build_graph: str,
     nix_path: str,
     nixpkgs_config: Path,
+    run_tests: bool = False,
 ) -> list[Attr]:
     if not attr_names:
         info("Nothing to be built.")
         return []
 
-    attrs = nix_eval(attr_names, system, allow, nix_path)
+    attrs = nix_eval(attr_names, system, allow, nix_path, run_tests=run_tests)
     filtered = []
     for attr in attrs:
         if not (attr.broken or attr.blacklisted):
